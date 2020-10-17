@@ -27,6 +27,7 @@ routes.post('/ongs',  celebrate({
         name: Joi.string().required(),
         email: Joi.string().required().email(),
         whatsapp: Joi.number().required().min(1000000000).max(99999999999),
+        password: Joi.string().required(),
         city: Joi.string().required(),
         uf: Joi.string().required().length(2),
     })
@@ -34,7 +35,8 @@ routes.post('/ongs',  celebrate({
 
 routes.post('/sessions', celebrate({
     [Segments.BODY]: Joi.object().keys({
-        id: Joi.string().required(),
+        email: Joi.string().required(),
+        password: Joi.string().required(),
     }),
 }), SessionController.create);
 

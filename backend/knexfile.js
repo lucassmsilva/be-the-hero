@@ -8,7 +8,7 @@ module.exports = {
       host : '127.0.0.1',
       user : 'root',
       password : 'denna',
-      database : 'myapp_test'
+      database : 'be_the_hero'
     },
     migrations: {
       directory: './src/database/migrations'

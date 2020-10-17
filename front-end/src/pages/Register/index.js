@@ -9,6 +9,7 @@ import logoImg from '../../assets/logo.svg';
 export default function Register(){
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
     const [city, setCity] = useState('');
     const [uf, setUf] = useState('');
@@ -21,6 +22,7 @@ export default function Register(){
         const data = {
             name,
             email,
+            password,
             whatsapp,
             city,
             uf
@@ -32,7 +34,7 @@ export default function Register(){
             history.push('/');
             
         } catch(err) {
-            alert(` Erro no cadastro, tente novamente`);
+            alert(`Erro no cadastro: ${err.response.data.error}`);
         }
     }
     return(
@@ -60,6 +62,11 @@ export default function Register(){
                         placeholder="Email"
                         value={email}
                         onChange = {e => setEmail(e.target.value)}
+                     />
+                    <input type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange = {e => setPassword(e.target.value)}
                      />
                     <input
                         placeholder="Whatsapp"

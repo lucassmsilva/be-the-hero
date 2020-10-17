@@ -1,5 +1,6 @@
 const connection = require('../database/connection');
 const generateUniqueId = require('../utils/generateUniqueId');
+const { hash } = require('bcryptjs');
 
 module.exports = {
     async index(request, response ) {
@@ -9,17 +10,40 @@ module.exports = {
     },
 
     async create(request, response) {
-        const { name, email, whatsapp, city, uf} = request.body;
+        const { name, email, password, whatsapp, city, uf} = request.body;
         const id = generateUniqueId()
-        
+        const hashedPassword = await hash(password, 8);
+
+        const findOne_Name = await connection('ongs')
+        .where('name', name)
+        .select('*')
+        .first()
+
+        const findOne_Email = await connection('ongs')
+        .where('email', email)
+        .select('*')
+        .first()
+
+        if(findOne_Name) {
+            return response.status(400).json({ error: 'Nome já cadastrado'});
+        }
+
+        if (findOne_Email){
+            return response.status(400).json({ error: 'Email já cadastrado'});
+        }
+
         await connection('ongs').insert({
             id,
             name,
             email,
+            password: hashedPassword,
             whatsapp,
             city,
             uf
         })
+
+        delete password;
+
         return response.json( { id });
     }
 };

@@ -20,8 +20,10 @@
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4",
+    "@types/bcryptjs": "^2.4.2",
+    "bcryptjs": "^2.4.3",
     "jest": "^26.5.3",
+    "nodemon": "^2.0.4",
     "supertest": "^5.0.0"
   }
 }
