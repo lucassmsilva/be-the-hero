@@ -25,6 +25,22 @@ export default function Profile(){
         setOngName(ongName);
     }
 
+    async function SignedOut () {
+        try{
+            await AsyncStorage.multiRemove([
+                'userToken',
+                'userName',
+                'userId'
+            ])
+
+            navigation.navigate('Login');
+
+        }catch(err){
+            alert('Falha no Logout')
+        }
+
+    }
+
     async function loadIncidents() {
 
         if(loading){
@@ -57,22 +73,27 @@ export default function Profile(){
         }
     }
 
-    useEffect(() => {
-        getOngData();
-        loadIncidents();
-    })
+    function handleNewIncidents(){
+        navigation.navigate('NewIncident', {
+            ongId: ongId
+        })
+    }
+
+    getOngData();
+    loadIncidents();
+
 
     return(
         <View style={styles.container}>
             <View style={styles.header}> 
                 <Image source={logoImg} />
 
-                <TouchableOpacity style={styles.newCaseButton} onPress={() => {}}>
+                <TouchableOpacity style={styles.newCaseButton} onPress={handleNewIncidents}>
                     <Text style={styles.options}>Novo </Text>
                     <Feather name='plus' size={16} color='#fff' />
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={SignedOut}>
                     <Feather name='log-out' size={16} color='#e02041'> </Feather>
                 </TouchableOpacity>
             </View>
