@@ -1,5 +1,6 @@
 const express = require('express');
 const { celebrate, Segments, Joi} = require('celebrate');
+const  authMiddleware  = require("./middlewares/auth");
 
 
 const routes = express.Router();
@@ -40,18 +41,19 @@ routes.post('/sessions', celebrate({
     }),
 }), SessionController.create);
 
-routes.get('/profile', celebrate({
-    [Segments.HEADERS]: Joi.object({
-        authorization: Joi.string().required(),
-    }).unknown(),
-}), ProfileController.index);
-
 routes.get('/incidents', celebrate( {
     [Segments.QUERY]: Joi.object().keys({
         page: Joi.number(),
     })
 }), IncidentController.index);
 
+routes.use(authMiddleware); // Para autenticar o usuário;
+
+routes.get('/profile', celebrate({
+    [Segments.HEADERS]: Joi.object({
+        authorization: Joi.string().required(),
+    }).unknown(),
+}), ProfileController.index);
 
 routes.post('/incidents', celebrate({
     [Segments.HEADERS]: Joi.object({
@@ -63,8 +65,6 @@ routes.post('/incidents', celebrate({
         value: Joi.number().max(99999).required(),
     })
 }), IncidentController.create);
-
-
 
 routes.delete('/incidents/:id', celebrate({
     [Segments.PARAMS]: Joi.object().keys({
