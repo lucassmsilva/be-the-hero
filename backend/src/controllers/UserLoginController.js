@@ -7,26 +7,26 @@ module.exports = {
 
         const { email, password  } = request.body;
 
-        const ong = await connection('ongs')
+        const user = await connection('users')
             .where('email', email)
             .select('name', 'password', 'id')
             .first();
 
-        const matchPassword = await compare(password, ong.password);
+        const matchPassword = await compare(password, user.password);
 
         if(!matchPassword) {
             return response.status(400).json({ error: 'No Match Found'});
         }
-        delete ong.password;
+        delete user.password;
 
         function generateToken(){
-            return jwt.sign({ id: this.id }, "secret", {
+            return jwt.sign({ id: this.id }, "secretuserdifferentfromong", {
               expiresIn: 86400
             });
           }
 
         token = generateToken()
 
-        return response.json({ong, token});
+        return response.json({user, token});
     }
 }

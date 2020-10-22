@@ -12,7 +12,10 @@ const IncidentController = require('./controllers/IncidentController');
 const ProfileController = require('./controllers/ProfileController');
 
 const SessionController = require('./controllers/SessionController');
+
+const UserController = require('./controllers/UserController');
 const { Seeder } = require('knex');
+const UserLoginController = require('./controllers/UserLoginController');
 
 /* Tipos de Parâmetros
 *
@@ -34,12 +37,31 @@ routes.post('/ongs',  celebrate({
     })
 }), OngController.create);
 
+routes.post('/users',  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        name: Joi.string().required(),
+        email: Joi.string().required().email(),
+        password: Joi.string().required(),
+        cpf: Joi.number().required(),
+        city: Joi.string().required(),
+        uf: Joi.string().required().length(2),
+    })
+}), UserController.create);
+
 routes.post('/sessions', celebrate({
     [Segments.BODY]: Joi.object().keys({
         email: Joi.string().required(),
         password: Joi.string().required(),
     }),
 }), SessionController.create);
+
+
+routes.post('/userlogin', celebrate({
+    [Segments.BODY]: Joi.object().keys({
+        email: Joi.string().required(),
+        password: Joi.string().required(),
+    }),
+}), UserLoginController.create);
 
 routes.get('/incidents', celebrate( {
     [Segments.QUERY]: Joi.object().keys({

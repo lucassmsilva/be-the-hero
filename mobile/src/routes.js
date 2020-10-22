@@ -12,12 +12,14 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import NewIncident from './pages/NewIncident';
+import Auth from './pages/Auth';
 
 export default function Routes(){
 
     return (
         <NavigationContainer>
             <AppStack.Navigator screenOptions={{ headerShown: false }} >
+            <AppStack.Screen name="Auth" component={Auth} />
             <AppStack.Screen name="Login" component={Login} />
             <AppStack.Screen name="Profile" component={Profile} />
             <AppStack.Screen name="Register" component={Register} />

@@ -8,27 +8,48 @@ import logoImg from '../../assets/logo.png';
 import heroesImg from  '../../assets/heroes.png';
 import { LoginForm } from '../../components/LoginForm';
 
-export default function Login(){
+export default function Login({route, navigat}){
 
     const navigation = useNavigation();
 
     function navigateToRegister(){
-        navigation.navigate('Register');
+        navigation.navigate('Register', route.params);
     }
 
     async function handleLogin(values){
         const { email, password } = values;
         try {
-            const response = await api.post('sessions', { email, password });
-            const {ong, token} = response.data;
+            const rota = route.params.route;
+            const response = await api.post(rota, { email, password });
 
-            await AsyncStorage.multiSet([
-                ['userToken', token],
-                ['userName', ong.name],
-                ['userId', ong.id]
-            ])
+            if (route.params.userType === 'ong'){
+                const {ong, token} = response.data;
 
-            navigation.navigate('Profile')
+                await AsyncStorage.multiSet([
+                    ['userToken', token],
+                    ['userName', ong.name],
+                    ['userId', ong.id]
+                ])
+    
+                navigation.navigate('Profile')
+            }
+            else {
+                if (route.params.userType === 'user'){
+                    const {user, token} = response.data;
+
+                    await AsyncStorage.multiSet([
+                        ['userToken', token],
+                        ['userName', user.name],
+                        ['userId', user.id]
+                    ])
+        
+                    navigation.navigate('Incidents')
+                }
+                else {
+                    throw new Error ('Falha');
+                }
+            }
+
         } catch(err){
             alert(`Falha no Login ${err.response.data.error}`)
         }

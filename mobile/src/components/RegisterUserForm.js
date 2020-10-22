@@ -3,14 +3,14 @@ import { Formik, ErrorMessage } from 'formik';
 import styled from 'styled-components/native'
 import * as Yup from 'yup';
 
-export const RegisterOngForm = props => (
+export const RegisterUserForm = props => (
     <Formik
     initialValues={{
         name: '',
         email: '',
         password: '',
         passwordConfirmation: '',
-        whatsapp: '',
+        cpf: '',
         city: '',
         uf: ''
      }}
@@ -22,8 +22,7 @@ export const RegisterOngForm = props => (
             passwordConfirmation: Yup.string()
             .oneOf([Yup.ref('password'), null], 'Passwords must match'),
             password: Yup.string().required('Password is required!'),
-            whatsapp: Yup.number().required('Whatsapp is required!')
-                .min(1000000000, 'must have 11 digits').max(99999999999, 'must have 11 digits'),
+            cpf: Yup.string().length(11, 'Enter correct code').matches(/[0-9]+/gi, "Enter number only").required('Required'),
             city: Yup.string().required('City is required'),
             uf: Yup.string().required('UF is required.').length(2, 'Must be two characters')
 
@@ -34,7 +33,7 @@ export const RegisterOngForm = props => (
     <View> 
         <Title>Cadastro</Title>
         <Input
-        placeholder= 'Nome da ONG'
+        placeholder= 'Nome'
         onChangeText={handleChange('name')}
         onBlur={handleBlur('name')}
         value={values.name}
@@ -71,12 +70,12 @@ export const RegisterOngForm = props => (
         <ErrorMessage component={ErrMessage} name='passwordConfirmation' />
 
         <Input
-        placeholder = 'Whatsapp'
-        onChangeText={handleChange('whatsapp')}
-        onBlur={handleBlur('whatsapp')}
-        value={values.whatsapp}
+        placeholder = 'CPF'
+        onChangeText={handleChange('cpf')}
+        onBlur={handleBlur('cpf')}
+        value={values.cpf}
         />
-        <ErrorMessage component={ErrMessage} name='whatsapp' />
+        <ErrorMessage component={ErrMessage} name='cpf' />
 
         <Input
         placeholder= 'City'
