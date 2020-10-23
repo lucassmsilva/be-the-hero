@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
-import { View, FlatList, Image, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, Image, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 
 import logoImg from '../../assets/logo.png';
 
@@ -17,6 +17,23 @@ export default function Incidents() {
     const [total, setTotal] = useState(0);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
+
+    async function SignedOut () {
+        try{
+            await AsyncStorage.multiRemove([
+                'userToken',
+                'userName',
+                'userId',
+                'userType'
+            ])
+
+            navigation.navigate('Auth');
+
+        }catch(err){
+            alert('Falha no Logout')
+        }
+
+    }
 
 
     function navigateToDetail(incident) {
@@ -57,6 +74,9 @@ export default function Incidents() {
                 <Text style={styles.headerText}>
                     Total de <Text style={styles.headerBold}>{total} casos</Text>
                 </Text>
+                <TouchableOpacity onPress={SignedOut}>
+                    <Feather name='log-out' size={16} color='#e02041'> </Feather>
+                </TouchableOpacity>
             </View>
 
             <Text style={styles.title}>Bem-vindo!</Text>

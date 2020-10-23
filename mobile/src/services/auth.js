@@ -1,3 +1,4 @@
+import React from 'react';
 import { AsyncStorage } from 'react-native';
 
 export const isSignedIn = async() => {
@@ -10,11 +11,7 @@ export const isSignedIn = async() => {
     }
 }
 
-export const SignedOut = async () => {
-    return await AsyncStorage.multiRemove([
-        'userToken',
-        'userName',
-        'userId'
-    ])
+export const getUserType = async () => {
+    const response =  await AsyncStorage.getItem('userType')
+    return response;
 }
-

@@ -6,6 +6,7 @@ export default StyleSheet.create({
         flex: 1,
         paddingHorizontal: 24,
         paddingTop: Constants.statusBarHeight + 20,
+        backgroundColor: '#e0e0e0'
     },
     header: {
         flexDirection: 'row',
@@ -18,11 +19,12 @@ export default StyleSheet.create({
         fontSize: 28,
         fontWeight: 'bold',
         color: '#000',
-        textAlign: 'center'
+        textAlign: 'center',
+        marginBottom: 32
     },
 
     box: {
-        marginTop: 48,
+        marginTop: 16,
         width: '60%',
         height: '30%',
         alignSelf: 'center',

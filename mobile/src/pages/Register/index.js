@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { Picker} from '@react-native-community/picker';
 import { View, Image, TouchableOpacity } from 'react-native';
-import { FontAwesome5, Feather } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
 
@@ -69,14 +68,11 @@ export default function Register({route, navigat}){
                 <Image source={logoImg} />  
 
                 <TouchableOpacity 
-                    style={styles.goBack}
                     onPress={navigateBack}>
                 <Feather name='arrow-left' size={16} color='#e02041' />
                 </TouchableOpacity>
                 
             </View>
-
-            <FontAwesome5 name='users' size={30} color='#000' />
         
 
         {selectForm()}

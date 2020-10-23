@@ -4,22 +4,38 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
 
+import { isSignedIn, getUserType } from '../../services/auth';
+
 export default function(){
 
     const navigation = useNavigation()
 
-    function goToLoginOng(){
+    async function goToLoginOng(){
         navigation.navigate('Login', {
             userType: 'ong',
             route: 'sessions'
         })
     }
-    function goToLoginUser(){
+    async function goToLoginUser(){
         navigation.navigate('Login', {
             userType: 'user',
             route: 'userlogin'
         })
     }
+
+    async function userisLogged() {
+        if (isSignedIn){
+            const userType = getUserType();
+            if (userType === 'user'){
+                navigation.navigate('Incidents')
+            }
+            else {
+                navigation.navigate('Profile')
+            }
+        }
+    }
+
+    userisLogged();
 
     return(
         <View style={styles.container}>

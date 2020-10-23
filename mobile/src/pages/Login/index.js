@@ -1,4 +1,5 @@
 import React from 'react';
+import { Feather } from '@expo/vector-icons';
 import { View, Image, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import api from '../../services/api';
@@ -8,12 +9,19 @@ import logoImg from '../../assets/logo.png';
 import heroesImg from  '../../assets/heroes.png';
 import { LoginForm } from '../../components/LoginForm';
 
+
+
 export default function Login({route, navigat}){
+
 
     const navigation = useNavigation();
 
     function navigateToRegister(){
         navigation.navigate('Register', route.params);
+    }
+
+    function navigateBack(){
+        navigation.goBack();
     }
 
     async function handleLogin(values){
@@ -28,7 +36,8 @@ export default function Login({route, navigat}){
                 await AsyncStorage.multiSet([
                     ['userToken', token],
                     ['userName', ong.name],
-                    ['userId', ong.id]
+                    ['userId', ong.id],
+                    ['userType', route.params.userType]
                 ])
     
                 navigation.navigate('Profile')
@@ -40,7 +49,8 @@ export default function Login({route, navigat}){
                     await AsyncStorage.multiSet([
                         ['userToken', token],
                         ['userName', user.name],
-                        ['userId', user.id]
+                        ['userId', user.id],
+                        ['userType', route.params.userType]
                     ])
         
                     navigation.navigate('Incidents')
@@ -63,6 +73,10 @@ export default function Login({route, navigat}){
         <View style={styles.container}>
             <View style={styles.header}> 
                 <Image source={logoImg} />
+                <TouchableOpacity 
+                    onPress={navigateBack}>
+                <Feather name='arrow-left' size={16} color='#e02041' />
+                </TouchableOpacity>
             </View>
 
             <LoginForm onSubmit={handleLogin} />

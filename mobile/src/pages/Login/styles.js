@@ -14,8 +14,9 @@ export default StyleSheet.create({
     },
 
     imageBackground: {
+        marginTop: 16,
         width: '100%',
-        height: 190,
+        height: 240,
         opacity: 0.5
     },
 

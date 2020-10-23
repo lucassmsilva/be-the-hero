@@ -20,8 +20,8 @@ export default function Profile(){
 
     async function getOngData(){
         const ongId = await AsyncStorage.getItem('userId')
-        setOngId(ongId);
         const ongName = await AsyncStorage.getItem('userName')
+        setOngId(ongId);
         setOngName(ongName);
     }
 
@@ -30,10 +30,11 @@ export default function Profile(){
             await AsyncStorage.multiRemove([
                 'userToken',
                 'userName',
-                'userId'
+                'userId',
+                'userType'
             ])
 
-            navigation.navigate('Login');
+            navigation.navigate('Auth');
 
         }catch(err){
             alert('Falha no Logout')
