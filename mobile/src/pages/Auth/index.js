@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -24,18 +24,25 @@ export default function(){
     }
 
     async function userisLogged() {
-        if (isSignedIn){
-            const userType = getUserType();
+        const status = isSignedIn();
+        if (status){
+            const userType = await getUserType();
             if (userType === 'user'){
                 navigation.navigate('Incidents')
             }
             else {
-                navigation.navigate('Profile')
+                if(userType === 'ong'){
+                    navigation.navigate('Profile')
+                }
+                
             }
         }
     }
 
-    userisLogged();
+    useEffect(() => {
+        userisLogged();
+    }, [])
+    
 
     return(
         <View style={styles.container}>

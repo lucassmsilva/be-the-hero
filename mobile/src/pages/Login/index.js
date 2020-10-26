@@ -28,7 +28,13 @@ export default function Login({route, navigat}){
         const { email, password } = values;
         try {
             const rota = route.params.route;
+
+            
             const response = await api.post(rota, { email, password });
+
+            if (!response){
+                alert(`No response!`)
+            }
 
             if (route.params.userType === 'ong'){
                 const {ong, token} = response.data;
@@ -42,6 +48,7 @@ export default function Login({route, navigat}){
     
                 navigation.navigate('Profile')
             }
+
             else {
                 if (route.params.userType === 'user'){
                     const {user, token} = response.data;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { View, Image, TouchableOpacity, AsyncStorage, Text, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons'
@@ -14,15 +15,21 @@ export default function Profile(){
     const [ongId, setOngId] = useState('');
 
     const [incidents, setIncidents] = useState([]);
-    const [loading, setLoading] = useState(false);
     
     const navigation = useNavigation();
 
     async function getOngData(){
-        const ongId = await AsyncStorage.getItem('userId')
-        const ongName = await AsyncStorage.getItem('userName')
-        setOngId(ongId);
-        setOngName(ongName);
+        try{
+
+            const ongId = await AsyncStorage.getItem('userId')
+            const ongName = await AsyncStorage.getItem('userName')
+            setOngId(ongId);
+            setOngName(ongName);
+
+        }catch(err){
+            alert('Erro ao carregar dados')
+        }
+
     }
 
     async function SignedOut () {
@@ -44,20 +51,28 @@ export default function Profile(){
 
     async function loadIncidents() {
 
-        if(loading){
-            return;
-        }
-
-        setLoading(true);
-
-        const response = await api.get('profile', {
-            headers: { id: ongId }
-        });
-
-        setIncidents(response.data)
-        setLoading(false);
+        try{
+            if (!ongId){
+                alert('erro ao carregar')
+            }
+            else{
+                    const response = await api.get('profile', {
+                        headers: { id: ongId }
+                    })
+            
+            
+                    if(!response){
+                        alert('Resposta nula')
+                    }
+                    else{
+                        setIncidents(response.data)
+                    }
         
+                }
+        }catch(err){
+            alert('Erro ao carregar incidents')
         }
+    }
 
     async function handleDelete(id){
         try {
@@ -80,8 +95,21 @@ export default function Profile(){
         })
     }
 
-    getOngData();
-    loadIncidents();
+    useEffect(() => {
+        let monted = true;
+        if (monted) {
+            getOngData()
+            if (ongId){
+                loadIncidents()
+            }    
+        }
+
+        return function cleanup(){
+            monted = false;
+        }
+
+    }, [ongId])
+
 
 
     return(

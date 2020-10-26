@@ -64,7 +64,15 @@ export default function Incidents() {
         }
 
     useEffect(() => {
-        loadIncidents();
+        let monted = true
+        if (monted){
+            loadIncidents();
+        }
+
+        return function cleanup(){
+            monted = false;
+        }
+        
     })
 
     return (
